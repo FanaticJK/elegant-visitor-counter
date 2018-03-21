@@ -1,5 +1,5 @@
 === Elegant Visitor Counter ===
-* Contributors: Sujan Karki
+* Contributors: [@regolithsjk](https://profiles.wordpress.org/regolithsjk)
 * Description: This plugin is for counting visitors of a website.
 * Author: [Sujan Karki](http://sujankarki.info.np)
 * Author URI: [http://sujankarki.info.np/](http://sujankarki.info.np/)
