@@ -6,7 +6,7 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       http://example.com
+ * @link       
  * @since      1.0.0
  *
  * @package    elegant_visitor_counter
@@ -67,10 +67,10 @@ class Elegant_visitor_counter {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'elegant_visitor_counter_VERSION' ) ) {
-			$this->version = elegant_visitor_counter_VERSION;
+		if ( defined( 'ELEGANT_VISITOR_COUNTER_VERSION' ) ) {
+			$this->version = ELEGANT_VISITOR_COUNTER_VERSION;
 		} else {
-			$this->version = '1.0.0';
+			$this->version = '2.0.0';
 		}
 		$this->elegant_visitor_counter = 'elegant-elegant-visitor-counter';
 
@@ -163,7 +163,7 @@ class Elegant_visitor_counter {
 	 * Register all of the hooks related to the public-facing functionality
 	 * of the plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    2.0.0
 	 * @access   private
 	 */
 	private function define_public_hooks() {
@@ -174,7 +174,8 @@ class Elegant_visitor_counter {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_action( 'widgets_init', $plugin_public, 'visitor_counter_plugin_widget' );
 		$this->loader->add_action( 'init', $plugin_public, 'evc_log_user' );
-
+		$this->loader->add_shortcode( 'init', $plugin_public, 'evc_add_shortcode' );
+		$this->loader->add_shortcode( 'visitor-counter', $plugin_public, 'wp_first_shortcode' );
 	}
 
 	/**

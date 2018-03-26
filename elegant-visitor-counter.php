@@ -9,16 +9,16 @@
  * that starts the plugin.
  *
  * @link
- * @since             1.0.0
+ * @since             2.0.0
  * @package           elegant_visitor_counter
  *
  * @wordpress-plugin
  * Plugin Name:       Elegant Visitor Counter
  * Plugin URI:
  * Description:       This plugin is for counting visitors of a website.
- * Version:           1.0.0
+ * Version:           2.0.0
  * Author:            Sujan Karki
- * Author URI:        sujankarki.info.np
+ * Author URI:        http://sujankarki.info.np
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       elegant-visitor-counter
  * Domain Path:       /languages
@@ -31,10 +31,10 @@ if ( ! defined( 'WPINC' ) ) {
 
 /**
  * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
+ * Start at version 2.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'ELEGANT_VISITOR_COUNTER_VERSION', '1.0.0' );
+define( 'ELEGANT_VISITOR_COUNTER_VERSION', '2.0.0' );
 
 /**
  * The code that runs during plugin activation.

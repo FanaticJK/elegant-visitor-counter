@@ -6,8 +6,8 @@
  * @link       http://example.com
  * @since      1.0.0
  *
- * @package    elegant_visitor_counter
- * @subpackage elegant_visitor_counter/includes
+ * @package    Plugin_Name
+ * @subpackage Plugin_Name/includes
  */
 
 /**
@@ -17,8 +17,8 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    elegant_visitor_counter
- * @subpackage elegant_visitor_counter/includes
+ * @package    Plugin_Name
+ * @subpackage Plugin_Name/includes
  * @author     Your Name <email@example.com>
  */
 class Elegant_visitor_counter_Loader {
@@ -50,6 +50,7 @@ class Elegant_visitor_counter_Loader {
 
 		$this->actions = array();
 		$this->filters = array();
+		$this->shortcodes = array();
 
 	}
 
@@ -79,6 +80,18 @@ class Elegant_visitor_counter_Loader {
 	 */
 	public function add_filter( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
 		$this->filters = $this->add( $this->filters, $hook, $component, $callback, $priority, $accepted_args );
+	}
+
+	/**
+	 * Add a new shortcode to the collection to be registered with WordPress
+	 *
+	 * @since     1.0.0
+	 * @param     string        $tag           The name of the new shortcode.
+	 * @param     object        $component      A reference to the instance of the object on which the shortcode is defined.
+	 * @param     string        $callback       The name of the function that defines the shortcode.
+	 */
+	public function add_shortcode( $tag, $component, $callback, $priority = 10, $accepted_args = 1 ) {
+		$this->shortcodes = $this->add( $this->shortcodes, $tag, $component, $callback, $priority, $accepted_args);
 	}
 
 	/**
@@ -123,6 +136,12 @@ class Elegant_visitor_counter_Loader {
 		foreach ( $this->actions as $hook ) {
 			add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
+
+		foreach ( $this->shortcodes as $hook ) {
+			add_shortcode( $hook['hook'], array( $hook['component'], $hook['callback'] ) );
+
+		}
+
 	}
 
 }

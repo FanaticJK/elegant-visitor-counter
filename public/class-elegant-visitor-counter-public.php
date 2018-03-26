@@ -101,7 +101,12 @@ class Elegant_visitor_counter_Public extends WP_Widget {
 		wp_enqueue_script( $this->elegant_visitor_counter, plugin_dir_url( __FILE__ ) . 'js/elegant-visitor-counter-public.js', array( 'jquery' ), $this->version, false );
 
 	}
-
+    
+    /**
+	 * Form in widget area
+	 *
+	 * @since    1.0.0
+	 */
 	function form( $instance ) {
 		$defaults            = array(
 			'visitors_today'      => 'yes',
@@ -157,9 +162,13 @@ class Elegant_visitor_counter_Public extends WP_Widget {
             </select>
         </p>
 		<?php
-
 	}
 
+	/**
+	 * Update the values in widget
+	 *
+	 * @since    1.0.0
+	 */
 	function update( $new_instance, $old_instance ) {
 		$instance                        = $old_instance;
 		$instance['visitors_today']      = strip_tags( $new_instance['visitors_today'] );
@@ -171,6 +180,11 @@ class Elegant_visitor_counter_Public extends WP_Widget {
 		return $instance;
 	}
 
+	/**
+	 * Display the widget in frontend
+	 *
+	 * @since    1.0.0
+	 */
 	function widget( $args, $instance ) {
 		extract( $instance );
 		?>
@@ -189,14 +203,8 @@ class Elegant_visitor_counter_Public extends WP_Widget {
                     <p>This Month: <?php echo $this->evc_get_visit_count( 'M' ) ?></p>
 					<?php
 				endif;
-				if ( $instance['visitors_this_month'] == 'yes' ): ?>
+				if ( $instance['total'] == 'yes' ): ?>
 					<?php
-					/*$splitNum = str_split( $this->evc_get_visit_count( 'T' ) );
-					echo '<div class="v-counter">
-                        <span>Visitor Number: </span>';
-					foreach ( $splitNum as $num ) {
-						echo '<span class="count-holder">' . $num . '</span>';
-					}*/
 					echo '<div class="v-counter">
                         <span>Total Visitors: </span>
                         <span class="count-holder">' . $this->evc_get_visit_count( 'T' ) . '</span>';
@@ -210,6 +218,11 @@ class Elegant_visitor_counter_Public extends WP_Widget {
 		<?php
 	}
 
+	/**
+	 * count visitor sql.
+	 *
+	 * @since    1.0.0
+	 */
 	function evc_get_visit_count( $interval = 'D' ) {
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'evc_log';
@@ -232,12 +245,21 @@ class Elegant_visitor_counter_Public extends WP_Widget {
 		return $count;
 	}
 
+	/**
+	 * register visitor counter widget.
+	 *
+	 * @since    1.0.0
+	 */
 	function visitor_counter_plugin_widget() {
 		register_widget( 'Elegant_visitor_counter_Public' );
 	}
 
+	/**
+	 * Log visitors and insert data to database.
+	 *
+	 * @since    1.0.0
+	 */
 	function evc_log_user() {
-//	    die('here');
 		if ( $this->evc_check_ip_exist( $_SERVER['REMOTE_ADDR'] ) == 0 ) {
 			global $wpdb;
 			$table_name     = $wpdb->prefix . 'evc_log';
@@ -254,6 +276,11 @@ class Elegant_visitor_counter_Public extends WP_Widget {
 		}
 	}
 
+	/**
+	 * Check if visitor already exists in database.
+	 *
+	 * @since    1.0.0
+	 */
 	function evc_check_ip_exist( $ip ) {
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'evc_log';
@@ -261,5 +288,31 @@ class Elegant_visitor_counter_Public extends WP_Widget {
 		$count      = $wpdb->get_var( $sql );
 
 		return $count;
+	}
+	
+	/**
+	 * Shortcode to displays visitors.
+	 *
+	 * @since    2.0.0
+	 */
+	function wp_first_shortcode($atts = [], $content = null, $tag = ''){
+		extract(shortcode_atts(array(
+				'visitor'=>'total',
+			), $atts));
+		if($atts['visitor'] == 'visitors_today'){
+			return $this->evc_get_visit_count( 'D' );
+		}
+		if($atts['visitor'] == 'visitors_yesterday'){
+			return $this->evc_get_visit_count( 'Y' );
+		}
+		if($atts['visitor'] == 'visitors_this_week'){
+			return $this->evc_get_visit_count( 'W' );
+		}
+		if($atts['visitor'] == 'visitors_this_month'){
+			return $this->evc_get_visit_count( 'M' );
+		}
+		if($atts['visitor'] == 'total'){
+			return $this->evc_get_visit_count( 'T' );
+		}
 	}
 }
